@@ -143,7 +143,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Dash
                 .setSuggestions(suggestions)
                 .setCategory(category)
                 .setSuggestionConditionMode(suggestionConditionMode)
-                .build();
+                .build(mContext);
     }
 
     public List<Tile> getSuggestions() {
@@ -159,7 +159,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Dash
                 .setSuggestions(suggestions.subList(0,
                         Math.min(suggestions.size(), MAX_SUGGESTION_TO_SHOW)))
                 .setCategory(category)
-                .build();
+                .build(mContext);
         notifyDashboardDataChanged(prevData);
         List<Tile> shownSuggestions = null;
         final int mode = mDashboardData.getSuggestionConditionMode();
@@ -187,7 +187,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Dash
         Log.d(TAG, "adapter setCategory called");
         mDashboardData = new DashboardData.Builder(prevData)
                 .setCategory(category)
-                .build();
+                .build(mContext);
         notifyDashboardDataChanged(prevData);
     }
 
@@ -196,7 +196,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Dash
         Log.d(TAG, "adapter setConditions called");
         mDashboardData = new DashboardData.Builder(prevData)
                 .setConditions(conditions)
-                .build();
+                .build(mContext);
         notifyDashboardDataChanged(prevData);
     }
 
@@ -211,7 +211,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Dash
             final DashboardData prevData = mDashboardData;
             mDashboardData = new DashboardData.Builder(prevData)
                     .setSuggestions(null)
-                    .build();
+                    .build(mContext);
             notifyDashboardDataChanged(prevData);
         } else {
             mSuggestionAdapter.removeSuggestion(suggestion);
@@ -265,7 +265,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Dash
                             MetricsEvent.ACTION_SETTINGS_CONDITION_EXPAND, false);
                     DashboardData prevData = mDashboardData;
                     mDashboardData = new DashboardData.Builder(prevData).setSuggestionConditionMode(
-                            DashboardData.HEADER_MODE_COLLAPSED).build();
+                            DashboardData.HEADER_MODE_COLLAPSED).build(mContext);
                     notifyDashboardDataChanged(prevData);
                     mRecyclerView.scrollToPosition(SUGGESTION_CONDITION_HEADER_POSITION);
                 });
@@ -426,7 +426,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.Dash
             DashboardData prevData = mDashboardData;
             final boolean wasCollapsed = curMode == DashboardData.HEADER_MODE_COLLAPSED;
             mDashboardData = new DashboardData.Builder(prevData)
-                    .setSuggestionConditionMode(nextMode).build();
+                    .setSuggestionConditionMode(nextMode).build(mContext);
             notifyDashboardDataChanged(prevData);
             if (wasCollapsed) {
                 mRecyclerView.scrollToPosition(SUGGESTION_CONDITION_HEADER_POSITION);

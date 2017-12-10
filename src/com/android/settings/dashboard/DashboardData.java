@@ -16,6 +16,8 @@
 package com.android.settings.dashboard;
 
 import android.annotation.IntDef;
+import android.content.Context;
+import android.provider.Settings;
 import android.graphics.drawable.Icon;
 import android.support.annotation.VisibleForTesting;
 import android.support.v7.util.DiffUtil;
@@ -72,10 +74,15 @@ public class DashboardData {
     @HeaderMode
     private final int mSuggestionConditionMode;
 
-    private DashboardData(Builder builder) {
+    private DashboardData(Builder builder, Context context) {
         mCategory = builder.mCategory;
         mConditions = builder.mConditions;
-        mSuggestions = builder.mSuggestions;
+        if ((Settings.System.getInt(context.getContentResolver(),
+                Settings.System.ENABLE_SUGGESTIONS, 1) == 1)) {
+            mSuggestions = builder.mSuggestions;
+        } else {
+            mSuggestions = null;
+        }
         mSuggestionConditionMode = builder.mSuggestionConditionMode;
 
         mItems = new ArrayList<>();
@@ -352,8 +359,8 @@ public class DashboardData {
             return this;
         }
 
-        public DashboardData build() {
-            return new DashboardData(this);
+        public DashboardData build(Context context) {
+            return new DashboardData(this, context);
         }
     }
 
